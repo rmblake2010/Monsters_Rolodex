@@ -30,24 +30,30 @@ class App extends Component {
       ))
   }
 
+  //Optimization - Performance, Reducing rendering of anonynmous functions
+  onSearchChange = (e) => {
+    const searchField = e.target.value.toLocaleLowerCase()
+    this.setState(() => {
+      return { searchField }
+    })
+  }
+
   render() {
     console.log('render')
     
-    const filteredMonsters = this.state.monsters.filter((monster) => {
-      return monster.name.toLocaleLowerCase().includes(this.state.searchField)
+    // Optimization (More readable)
+    const { monsters, searchField } = this.state
+    const { onSearchChange } = this
+
+    const filteredMonsters = monsters.filter((monster) => {
+      return monster.name.toLocaleLowerCase().includes(searchField)
     })
 
 
     return (
       <div className="App">
         <input className='search-box' type='search' placeholder='search monsters' 
-          onChange={(e) => {
-            const searchField = e.target.value.toLocaleLowerCase()
-            this.setState(() => {
-              return { searchField }
-            })
-          }
-        }
+          onChange={onSearchChange}
         />
         {filteredMonsters.map((monster) => {
             return(
