@@ -1,5 +1,7 @@
 import { Component } from 'react';
 
+import CardList from './components/card-list/card-list.component';
+import SearchBox from './components/search-box/search-box.component';
 import './App.css';
 
 class App extends Component {
@@ -9,12 +11,11 @@ class App extends Component {
     this.state = {
       monsters : [],
       searchField: '',
-
-
     }
     console.log('constructor')
   }
 
+  //Function runs when app is rendered, API call
   componentDidMount() {
     console.log('component did mount')
     fetch('https://jsonplaceholder.typicode.com/users')
@@ -30,7 +31,7 @@ class App extends Component {
       ))
   }
 
-  //Optimization - Performance, Reducing rendering of anonynmous functions
+  //Optimization - Performance, Reducing rendering of anonymous functions
   onSearchChange = (e) => {
     const searchField = e.target.value.toLocaleLowerCase()
     this.setState(() => {
@@ -39,7 +40,6 @@ class App extends Component {
   }
 
   render() {
-    console.log('render')
     
     // Optimization (More readable)
     const { monsters, searchField } = this.state
@@ -52,14 +52,8 @@ class App extends Component {
 
     return (
       <div className="App">
-        <input className='search-box' type='search' placeholder='search monsters' 
-          onChange={onSearchChange}
-        />
-        {filteredMonsters.map((monster) => {
-            return(
-              <h1 key={monster.id}>{`${monster.name}`}</h1>
-            )
-          })}
+          <SearchBox className='search-box' onChangeHandler={onSearchChange} placeholder='search monsters' />
+          <CardList monsters={filteredMonsters} />
       </div>
     );
   }
